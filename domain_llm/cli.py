@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import json
 import typer
+
 from .config import load_config
 from .data import prepare_dataset
 from .evaluate import compare, evaluate
