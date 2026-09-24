@@ -15,12 +15,21 @@ def _classification_metrics(expected: list[str], predicted: list[str]) -> dict[s
     labels = sorted(set(expected))
     return {
         "accuracy": float(accuracy_score(expected, predicted)),
-        "macro_f1": float(f1_score(expected, predicted, labels=labels, average="macro", zero_division=0)),
-        "weighted_f1": float(f1_score(expected, predicted, labels=labels, average="weighted", zero_division=0)),
+        "macro_f1": float(
+            f1_score(expected, predicted, labels=labels, average="macro", zero_division=0)
+        ),
+        "weighted_f1": float(
+            f1_score(expected, predicted, labels=labels, average="weighted", zero_division=0)
+        ),
     }
 
 
-def evaluate(predictor: IntentPredictor, test_file: str, output_file: str) -> dict:
+def evaluate(
+    predictor: IntentPredictor,
+    test_file: str,
+    output_file: str,
+    batch_size: int = 4,
+) -> dict:
     rows = read_jsonl(test_file)
     predictions = []
     expected_labels = []
@@ -28,19 +37,33 @@ def evaluate(predictor: IntentPredictor, test_file: str, output_file: str) -> di
     correct = 0
     total_latency = 0.0
 
-    for row in rows:
-        started = time.perf_counter()
-        prediction, raw = predictor.predict(row["text"])
-        total_latency += time.perf_counter() - started
-        expected = row["label"]
-        correct += prediction == expected
-        expected_labels.append(expected)
-        predicted_labels.append(prediction)
-        predictions.append({"text": row["text"], "expected": expected, "prediction": prediction, "raw": raw})
+    for start in range(0, len(rows), batch_size):
+        batch = rows[start : start + batch_size]
+        texts = [row["text"] for row in batch]
 
-    metrics = _classification_metrics(expected_labels, predicted_labels) if rows else {
-        "accuracy": 0.0, "macro_f1": 0.0, "weighted_f1": 0.0
-    }
+        started = time.perf_counter()
+        batch_predictions = predictor.predict_batch(texts)
+        total_latency += time.perf_counter() - started
+
+        for row, (prediction, raw) in zip(batch, batch_predictions):
+            expected = row["label"]
+            correct += prediction == expected
+            expected_labels.append(expected)
+            predicted_labels.append(prediction)
+            predictions.append(
+                {
+                    "text": row["text"],
+                    "expected": expected,
+                    "prediction": prediction,
+                    "raw": raw,
+                }
+            )
+
+    metrics = (
+        _classification_metrics(expected_labels, predicted_labels)
+        if rows
+        else {"accuracy": 0.0, "macro_f1": 0.0, "weighted_f1": 0.0}
+    )
     parameters = predictor.parameter_counts()
     result = {
         "samples": len(rows),

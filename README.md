@@ -7,7 +7,7 @@ and adapter with the same exact-match metric, and serves predictions through Fas
 
 ## What is included
 
-* **Automated data pipeline:** downloads `PolyAI/banking77`, converts numeric labels to
+* **Automated data pipeline:** downloads `mteb/banking77`, converts numeric labels to
   canonical names, writes `train.jsonl`, `test.jsonl`, and `labels.json`.
 * **Baseline and fine-tuned evaluation:** JSON artifacts preserve every prediction,
   raw model response, correct count, and accuracy. `compare-results` derives its change
