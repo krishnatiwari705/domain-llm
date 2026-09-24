@@ -2,6 +2,7 @@ import pytest
 
 from domain_llm.config import Config, load_config
 
+
 def test_default_config_values():
     config = Config()
     assert config.model.name == "Qwen/Qwen2.5-1.5B-Instruct"
