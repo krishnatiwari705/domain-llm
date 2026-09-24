@@ -5,6 +5,7 @@ import json
 from pathlib import Path
 from .prompts import training_text
 
+
 def prepare_dataset(dataset_name: str, output_dir: str, train_split="train", test_split="test") -> dict:
     """Download Banking77 and save JSONL records plus label metadata reproducibly."""
     from datasets import load_dataset
