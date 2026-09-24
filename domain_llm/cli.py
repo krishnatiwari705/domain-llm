@@ -11,7 +11,6 @@ from .evaluate import compare, evaluate
 from .inference import IntentPredictor
 from .train import train_lora
 
-
 app = typer.Typer(no_args_is_help=True)
 
 @app.command()
