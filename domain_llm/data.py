@@ -1,11 +1,10 @@
 """Dataset download, validation, and training record creation."""
 from __future__ import annotations
+
 import json
 from pathlib import Path
-from .prompts import training_text
 
-def prepare_dataset(dataset_name: str, output_dir: str, train_split="train", test_split="test") -> dict:
-    """Download Banking77 and save JSONL records plus label metadata reproducibly."""
+from .prompts import training_text
     from datasets import load_dataset
     ds = load_dataset(dataset_name)
     labels = ds[train_split].features["label"].names
