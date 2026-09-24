@@ -55,7 +55,7 @@ def train_lora(config: Config) -> None:
         fp16=True,
         gradient_checkpointing=True,
         gradient_checkpointing_kwargs={"use_reentrant": False},
-        warmup_ratio=0.03,
+        warmup_steps=10,
     )
 
     trainer = SFTTrainer(
