@@ -4,9 +4,11 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from pathlib import Path
 
-
 @dataclass
 class ModelConfig:
+    name: str = "Qwen/Qwen2.5-1.5B-Instruct"
+    max_new_tokens: int = 32
+    device_map: str = "auto"
 @dataclass
 class DataConfig:
     dataset: str = "PolyAI/banking77"
