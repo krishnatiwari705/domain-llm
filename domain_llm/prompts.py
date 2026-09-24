@@ -1,5 +1,6 @@
 """Prompt construction and robust intent extraction."""
 from __future__ import annotations
+
 SYSTEM_PROMPT = "You are a banking support intent classifier. Return only the exact intent label, with no explanation."
 def prompt(text: str, labels: list[str] | None = None) -> str:
     choices = f"\nValid labels: {', '.join(labels)}" if labels else ""

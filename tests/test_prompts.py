@@ -1,5 +1,6 @@
 from domain_llm.prompts import normalize_prediction, prompt, training_text
 
+
 def test_prompt_contains_input_and_labels():
     value = prompt("where is my transfer", ["card_arrival", "pending_transfer"])
     assert "where is my transfer" in value and "pending_transfer" in value

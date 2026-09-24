@@ -1,5 +1,7 @@
 import pytest
+
 from domain_llm.config import Config, load_config
+
 
 def test_default_config_values():
     config = Config()

@@ -1,12 +1,16 @@
 """Command-line workflow entrypoints."""
 from __future__ import annotations
+
 import json
+
 import typer
+
 from .config import load_config
 from .data import prepare_dataset
 from .evaluate import compare, evaluate
 from .inference import IntentPredictor
 from .train import train_lora
+
 app = typer.Typer(no_args_is_help=True)
 
 @app.command()
