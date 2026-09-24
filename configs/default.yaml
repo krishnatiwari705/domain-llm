@@ -3,7 +3,7 @@ model:
   max_new_tokens: 32
   device_map: auto
 data:
-  dataset: PolyAI/banking77
+  dataset: mteb/banking77
   train_split: train
   test_split: test
   output_dir: data/processed
