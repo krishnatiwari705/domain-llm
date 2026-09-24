@@ -17,9 +17,7 @@ def chat_messages(text: str, labels: list[str]) -> list[dict[str, str]]:
 
 
 def training_text(text: str, label: str, labels: list[str]) -> str:
-    messages = chat_messages(text, labels)
-    messages.append({"role": "assistant", "content": label})
-    return messages
+    return f"{prompt(text, labels)} {label}"
 
 
 def normalize_prediction(value: str, labels: list[str]) -> str:
