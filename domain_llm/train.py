@@ -4,8 +4,10 @@ from __future__ import annotations
 from .config import Config
 from .data import read_jsonl
 
-
 def train_lora(config: Config) -> None:
+    """Train adapter weights only; base Qwen weights remain untouched."""
+    from datasets import Dataset
+    from peft import LoraConfig
     from transformers import AutoModelForCausalLM, AutoTokenizer, TrainingArguments, set_seed
     from trl import SFTTrainer
     set_seed(config.training.seed)
