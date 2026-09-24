@@ -3,6 +3,7 @@ from __future__ import annotations
 
 from .config import Config
 from .data import read_jsonl
+from .prompts import chat_messages
 
 
 def train_lora(config: Config) -> None:
@@ -28,6 +29,26 @@ def train_lora(config: Config) -> None:
 
     records = read_jsonl(f"{config.data.output_dir}/train.jsonl")
     dataset = Dataset.from_list(records)
+
+    import json
+    from pathlib import Path
+
+    labels = json.loads(
+        Path(f"{config.data.output_dir}/labels.json").read_text()
+    )
+
+    def format_record(example):
+        messages = chat_messages(example["text"], labels)
+        messages.append({"role": "assistant", "content": example["label"]})
+        return {
+            "training_text": tokenizer.apply_chat_template(
+                messages,
+                tokenize=False,
+                add_generation_prompt=False,
+            )
+        }
+
+    dataset = dataset.map(format_record, remove_columns=dataset.column_names)
 
     peft = LoraConfig(
         r=config.training.lora_r,
