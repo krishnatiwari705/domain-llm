@@ -4,7 +4,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from .prompts import normalize_prediction, prompt
+from .prompts import chat_messages, normalize_prediction
 
 
 class IntentPredictor:
@@ -34,10 +34,7 @@ class IntentPredictor:
         self.max_new_tokens = max_new_tokens
 
     def _render(self, text: str) -> str:
-        messages = [
-            {"role": "system", "content": "Return only the exact Banking77 intent label."},
-            {"role": "user", "content": prompt(text, self.labels)},
-        ]
+        messages = chat_messages(text, self.labels)
         return self.tokenizer.apply_chat_template(
             messages,
             tokenize=False,
