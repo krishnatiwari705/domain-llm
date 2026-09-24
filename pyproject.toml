@@ -25,3 +25,7 @@ line-length = 100
 
 [tool.setuptools]
 packages = ["domain_llm"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["domain_llm"]
+known-third-party = ["typer"]
