@@ -4,6 +4,7 @@ from __future__ import annotations
 from .config import Config
 from .data import read_jsonl
 
+
 def train_lora(config: Config) -> None:
     """Train adapter weights only; base Qwen weights remain untouched."""
     from datasets import Dataset
