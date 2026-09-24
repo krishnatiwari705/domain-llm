@@ -1,18 +1,17 @@
 """Command-line workflow entrypoints."""
 from __future__ import annotations
+
 import json
+
 import typer
+
 from .config import load_config
 from .data import prepare_dataset
 from .evaluate import compare, evaluate
 from .inference import IntentPredictor
 from .train import train_lora
-app = typer.Typer(no_args_is_help=True)
 
-@app.command()
-def prepare(config: str = "configs/default.yaml"):
-    c = load_config(config); typer.echo(json.dumps(prepare_dataset(c.data.dataset, c.data.output_dir, c.data.train_split, c.data.test_split)))
-@app.command()
+app = typer.Typer(no_args_is_help=True)
 def train(config: str = "configs/default.yaml"):
     train_lora(load_config(config))
 @app.command()
